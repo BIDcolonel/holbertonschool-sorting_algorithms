@@ -15,28 +15,32 @@ size_t lomuto_partition(int *array, size_t low, size_t high, size_t size)
 	size_t smallerIndex, currentIndex;
 
 	pivot = array[high];
-	smallerIndex = low - 1;
+	smallerIndex = low;
 
 	for (currentIndex = low; currentIndex <= high - 1; currentIndex++)
 	{
 		if (array[currentIndex] < pivot)
 		{
-			smallerIndex++;
-			temp = array[smallerIndex];
-			array[smallerIndex] = array[currentIndex];
-			array[currentIndex] = temp;
 			if (smallerIndex != currentIndex)
+			{
+				temp = array[smallerIndex];
+				array[smallerIndex] = array[currentIndex];
+				array[currentIndex] = temp;
 				print_array(array, size);
+			}
+			smallerIndex++;
 		}
 	}
 
-	temp = array[smallerIndex + 1];
-	array[smallerIndex + 1] = array[high];
-	array[high] = temp;
-	if (smallerIndex + 1 != high)
+	if (smallerIndex != high)
+	{
+		temp = array[smallerIndex];
+		array[smallerIndex] = array[high];
+		array[high] = temp;
 		print_array(array, size);
+	}
 
-	return (smallerIndex + 1);
+	return (smallerIndex);
 }
 
 /**
@@ -54,10 +58,9 @@ void quick_sort_recursive(int *array, size_t low, size_t high, size_t size)
 	{
 		pivotIndex = lomuto_partition(array, low, high, size);
 
-		if (pivotIndex != 0 && (size_t)pivotIndex != size)
+		if (pivotIndex > 0)
 			quick_sort_recursive(array, low, pivotIndex - 1, size);
-		if ((size_t)pivotIndex != size - 1)
-			quick_sort_recursive(array, pivotIndex + 1, high, size);
+		quick_sort_recursive(array, pivotIndex + 1, high, size);
 	}
 }
 
