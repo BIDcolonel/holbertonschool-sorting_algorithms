@@ -9,38 +9,38 @@
  *
  * Return: The index of the pivot element.
  */
-size_t lomuto_partition(int *array, size_t low, size_t high, size_t size)
+size_t lomuto_partition(int *array, ssize_t low, ssize_t high, size_t size)
 {
 	int pivot, temp;
-	size_t smallerIndex, currentIndex;
+	ssize_t smallerIndex, CurrentIndex;
 
 	pivot = array[high];
-	smallerIndex = low;
+	smallerIndex = low - 1;
 
-	for (currentIndex = low; currentIndex <= high - 1; currentIndex++)
+	for (CurrentIndex = low; CurrentIndex <= high - 1; CurrentIndex++)
 	{
-		if (array[currentIndex] < pivot)
+		if (array[CurrentIndex] < pivot)
 		{
-			if (smallerIndex != currentIndex)
+			smallerIndex++;
+			if (smallerIndex != CurrentIndex)
 			{
 				temp = array[smallerIndex];
-				array[smallerIndex] = array[currentIndex];
-				array[currentIndex] = temp;
+				array[smallerIndex] = array[CurrentIndex];
+				array[CurrentIndex] = temp;
 				print_array(array, size);
 			}
-			smallerIndex++;
 		}
 	}
 
-	if (smallerIndex != high)
+	if ((smallerIndex + 1) != high)
 	{
-		temp = array[smallerIndex];
-		array[smallerIndex] = array[high];
+		temp = array[smallerIndex + 1];
+		array[smallerIndex + 1] = array[high];
 		array[high] = temp;
 		print_array(array, size);
 	}
 
-	return (smallerIndex);
+	return (smallerIndex + 1);
 }
 
 /**
@@ -50,15 +50,14 @@ size_t lomuto_partition(int *array, size_t low, size_t high, size_t size)
  * @high: The high index of the partition.
  * @size: The size of the array.
  */
-void quick_sort_recursive(int *array, size_t low, size_t high, size_t size)
+void quick_sort_recursive(int *array, ssize_t low, ssize_t high, size_t size)
 {
 	size_t pivotIndex;
 
 	if (low < high)
 	{
 		pivotIndex = lomuto_partition(array, low, high, size);
-
-		if (pivotIndex > 0)
+		if (pivotIndex != 0)
 			quick_sort_recursive(array, low, pivotIndex - 1, size);
 		quick_sort_recursive(array, pivotIndex + 1, high, size);
 	}
