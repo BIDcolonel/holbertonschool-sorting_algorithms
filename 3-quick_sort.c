@@ -54,10 +54,8 @@ void quick_sort_recursive(int *array, size_t low, size_t high, size_t size)
 	{
 		pivotIndex = lomuto_partition(array, low, high, size);
 
-		if (pivotIndex != 0 && (size_t)pivotIndex != size)
-			quick_sort_recursive(array, low, pivotIndex - 1, size);
-		if ((size_t)pivotIndex != size - 1)
-			quick_sort_recursive(array, pivotIndex + 1, high, size);
+		quick_sort_recursive(array, low, pivotIndex - 1, size);
+		quick_sort_recursive(array, pivotIndex + 1, high, size);
 	}
 }
 
